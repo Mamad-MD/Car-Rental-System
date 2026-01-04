@@ -1,4 +1,5 @@
 #include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -15,10 +16,17 @@ protected:
     UserRole role;
 
 public:
-    User(string user, string pass, UserRole role);
+    User() : username(""), passwordHash(""), role(Customer) {}
+    User(string user, string pass, UserRole role) : username(user), passwordHash(pass), role(role) {}
 
-    string getusername() const;
+
+    string getusername() const {return username;}
+
     bool checkpass(string inputpass) const;
 
     virtual void showmenu() = 0;
+
+    bool operator==(const User& other) const {
+        return this->username == other.username;
+    }
 };

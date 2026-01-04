@@ -1,10 +1,56 @@
+#include <iostream>
 #include <string>
+#include "core/RentalSystem.h"
 
 using namespace std;
 
-int main() {
+void showGuestMenu() {
+    cout << "\n===== Welcome to Car Rental System =====" << endl;
+    cout << "1. Register (New Customer)" << endl;
+    cout << "2. Login" << endl;
+    cout << "3. View Available Cars (Guest Mode)" << endl;
+    cout << "4. Search for a Car" << endl;
+    cout << "0. Exit" << endl;
+    cout << "Selection: ";
+}
 
-    // nothing !
+int main() {
+    RentalSystem system;
+    int choice;
+    bool running = true;
+
+    while (running) {
+        showGuestMenu();
+        cin >> choice;
+
+        switch (choice) {
+            case 1: {
+                string user, pass;
+                cout << "Enter Username: "; cin >> user;
+                cout << "Enter Password: "; cin >> pass;
+                system.registerUser(user, pass, Customer);
+                break;
+            }
+            case 2: {
+                string user, pass;
+                cout << "Username: "; cin >> user;
+                cout << "Password: "; cin >> pass;
+                if (system.login(user, pass)) {
+                    cout << "Login Successful!" << endl;
+                } else {
+                    cout << "Invalid credentials!" << endl;
+                }
+                break;
+            }
+            case 3:
+                system.displayAllCars();
+            case 0:
+                running = false;
+                break;
+            default:
+                cout << "Invalid Option!" << endl;
+        }
+    }
 
     return 0;
 }
