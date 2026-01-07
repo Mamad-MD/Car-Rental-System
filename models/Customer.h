@@ -1,3 +1,4 @@
+//models/customer.h
 #include "User.h"
 
 class Customer : public User {
@@ -6,15 +7,19 @@ private:
     bool isBlocked;
 
 public:
-    Customer(string user, string pass) : User(user, pass, Customer), balance(0), isBlocked(false) {}
+Customer(std::string user, std::string pass)
+        : User(user, pass, UserRole::CUSTOMER), balance(0), isBlocked(false) {}
 
-    void showMenu() override {
-        cout << "\n--- Customer Menu ---" << endl;
-        cout << "1. Search Cars" << endl;
-        cout << "2. Create Reservation" << endl;
-        cout << "3. View My Rentals" << endl;
-        cout << "4. Extend Rental" << endl;
-        cout << "5. Pay Fine" << endl;
-        cout << "0. Logout" << endl;
+    bool getBlockStatus() const { return isBlocked; }
+    void setBlockStatus(bool status) { isBlocked = status; }
+
+  void showMenu() override {
+        std::cout << "\n--- Customer Menu ---" << std::endl;
+        std::cout << "1. Search Cars" << std::endl;
+        std::cout << "2. Create Reservation" << std::endl;
+        std::cout << "3. View My Rentals" << std::endl;
+        std::cout << "4. Extend Rental" << std::endl;
+        std::cout << "5. Pay Fine" << std::endl;
+        std::cout << "0. Logout" << std::endl;
     }
 };

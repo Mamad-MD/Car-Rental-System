@@ -1,5 +1,6 @@
+//structures/avltree.h
 #include <iostream>
-#include <algorithm>
+//#include <algorithm>
 
 template <typename T>
 class AVLTree {
@@ -9,13 +10,14 @@ private:
         Node* left;
         Node* right;
         int height;
-
         Node(T val) : data(val), left(nullptr), right(nullptr), height(1) {}
-
     };
 
     Node* root;
 
+    int myMax(int a, int b) {
+        return (a > b) ? a : b;
+    }
     int getheghit(Node* n) {
         return n ? n->height : 0;
     }
@@ -31,8 +33,8 @@ private:
         x->right = y;
         x->left = T2;
 
-        y->height = std::max(getheghit(y->left), getheghit(y->right)) + 1;
-        x->height = std::max(getheghit(x->left), getheghit(x->right)) + 1;
+        y->height = myMax(getheghit(y->left), getheghit(y->right)) + 1;
+        x->height = myMax(getheghit(x->left), getheghit(x->right)) + 1;
 
         return x;
     }
@@ -44,8 +46,8 @@ private:
         y->left = x;
         x->right = T2;
 
-        x->height = std::max(getheghit(x->left), getheghit(x->right)) + 1;
-        y->height = std::max(getheghit(y->left), getheghit(y->right)) + 1;
+        x->height = myMax(getheghit(x->left), getheghit(x->right)) + 1;
+        y->height = myMax(getheghit(y->left), getheghit(y->right)) + 1;
 
         return y;
     }
@@ -60,13 +62,13 @@ private:
         else
             return node;
 
-            node->height = 1 + std::max(getheghit(node->left), getheghit(node->right));
+            node->height = 1 + mymax(getheghit(node->left), getheghit(node->right));
 
             int balance = getbalance(node);
-
+            // Left Left Case
             if(balance > 1 && key < node->left->data)
                 return rightRotate(node);
-
+            // Right Right Case
             if(balane < -1 && key > node->right->data)
                 return leftRotate(node);
 
@@ -74,7 +76,7 @@ private:
                 node->left = leftRotate(node->left);
                 return rightRotate(node);
             }
-
+            // Right Left Case
             if(balance < -1 && key < node->right->data) {
                 node->right = rightRotate(noed->right);
                 return leftRotate(node);
@@ -102,10 +104,4 @@ public:
         Node* result = search(root, key);
         return result ? &(result->data) : nullptr;
     }
-
-
-
-
-
-
 };

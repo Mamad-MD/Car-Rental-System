@@ -1,4 +1,6 @@
+//models/car.h
 #include <string>
+#include <iostream>
 #include "../structures/MinHeap.h"
 #include "Reservation.h"
 
@@ -13,38 +15,43 @@ enum CarStatus  {
 
 class Car {
 private:
+    int id;
     string brand;
     string model;
     string plate;
-    double priceperday;
+    double pricePerDay;
     CarStatus status;
     MinHeap<Reservation> reservationQueue;
 
 public:
-    Car(string brand, string model, string plate, double price);
+    Car() : id(0), brand(""), model(""), plate(""), pricePerDay(0), status(Available) {}
+    Car(int id, string brand, string model, string plate, double price);
 
-    string getbrand() const;
-    string getmodel() const;
-    string getplate() const;
-    double getprice() const;
-    string getstatus() const;
+    int getId() const { return id; }
+    string getBrand() const { return brand; }
+    string getModel() const { return model; }
+    double getPrice() const { return pricePerDay; }
+    string getStatusString() const;
+    CarStatus getStatus() const { return status; }
 
-    void setstatus(CarStatus newStatus);
+    void setStatus(CarStatus newStatus);
 
     void printDetails() const;
 
     void addReservation(Reservation res) {
-        // ۱. ابتدا باید تداخل زمانی چک شود (Double-booking)
-        // ۲. اگر تداخلی نبود، رزرو اضافه شود
         reservationQueue.push(res);
-        this->setStatus(RESERVED); [cite: 22]
+        this->setStatus(Reserved);
     }
 
     Reservation processNextReservation() {
         if (!reservationQueue.isEmpty()) {
-            return reservationQueue.pop(); // تخصیص به نفر اول صف [cite: 25]
+            return reservationQueue.pop();
         }
-        // بازگرداندن یک رزرو خالی در صورت نبود رزرو
-        return {};
+        return Reservation();
     }
+
+    // عملگرها برای استفاده در AVL و LinkList
+    bool operator<(const Car& other) const;
+    bool operator>(const Car& other) const;
+    bool operator==(const Car& other) const;
 };

@@ -9,32 +9,25 @@ struct HashNode {
     bool operator==(const HashNode& other) const {
         return key == other.key;
     }
-
-    bool operator==(const K& otherkey) const {
-        return key == otherkey;
-    }
 };
 
 template<typename K, typename V>
 class Hashtable {
 private:
-    LinkList<hashnode<K , V>>+* table;
+    LinkList<HashNode<K, V>>* table;
     int capacity;
+
     int hashFunction(std::string key) {
-        unsignrd long hash = 5381;
+        unsigned long hash = 5381;
         for (char c : key) {
             hash = ((hash << 5) + hash) + c;
         }
-        return hasg % capacity;
-    }
-    int hashFunction(int key) {
-        return key % capacity;
+        return hash % capacity;
     }
 
-public:
-
-    hashtable(int cap = 101) : capacity(cap) {
-        table = new LinkList<HashNode<K , V>>[capacity];
+public: // <--- متدها باید زیر این خط باشند
+    Hashtable(int cap = 101) : capacity(cap) {
+        table = new LinkList<HashNode<K, V>>[capacity];
     }
 
     ~Hashtable() { delete[] table; }
@@ -46,11 +39,13 @@ public:
 
     V* search(K key) {
         int index = hashFunction(key);
-        HashNode<K,V> tempNode;
+        HashNode<K, V> tempNode;
         tempNode.key = key;
 
-        HashNode<K,V>* result = table[index].search(tempNode);
-        if(result) {
+        // LinkList::search پوینتر به HashNode برمی‌گرداند
+        HashNode<K, V>* result = table[index].search(tempNode);
+
+        if (result != nullptr) {
             return &(result->value);
         }
         return nullptr;

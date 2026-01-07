@@ -1,3 +1,4 @@
+//structures/linklist.h
 #include <iostream>
 
 
@@ -8,7 +9,6 @@ private:
         T data;
         node* next;
         Node* prev;
-
         Node(T val) : data(val), next(nullptr), prev(nullptr) {}
     };
 

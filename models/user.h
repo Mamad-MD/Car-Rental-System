@@ -1,12 +1,14 @@
+//models/user.h
 #include <string>
 #include <iostream>
+#include "../utils/HashHelper.h"
 
 using namespace std;
 
-enum UserRole {
-    Customer,
-    Staff,
-    Manager
+enum class UserRole {
+    CUSTOMER = 0,
+    STAFF = 1,
+    MANAGER = 2
 };
 
 class User {
@@ -16,15 +18,18 @@ protected:
     UserRole role;
 
 public:
-    User() : username(""), passwordHash(""), role(Customer) {}
-    User(string user, string pass, UserRole role) : username(user), passwordHash(pass), role(role) {}
-
+    User() : username(""), passwordHash(""), role(UserRole::CUSTOMER) {}
+    User(string user, string pass, UserRole r) : username(user), passwordHash(pass), role(r) {}
+    virtual ~User() {}
 
     string getusername() const {return username;}
+    string getPassword() const { return passwordHash; }
+    bool checkPassword(string inputHash) const {
+        return passwordHash == inputHash;
+    }
+    UserRole getRole() const { return role; }
 
-    bool checkpass(string inputpass) const;
-
-    virtual void showmenu() = 0;
+    virtual void showMenu() = 0;
 
     bool operator==(const User& other) const {
         return this->username == other.username;
